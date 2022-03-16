@@ -12,7 +12,7 @@ import {runOnJS} from 'react-native-reanimated';
 
 export default function App() {
   const [hasPermission, setHasPermission] = React.useState(false);
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = React.useState(true);
 
   const [faces, setFaces] = React.useState();
 
@@ -20,8 +20,12 @@ export default function App() {
   const device = devices.front;
 
   React.useEffect(() => {
-    if (faces !== undefined) {
-      console.log(JSON.stringify(faces));
+    if (faces !== undefined && faces.length !== 0) {
+      const numberKey = Object.keys(faces[0].contours).length;
+      if (numberKey === 15) {
+        alert('Recognize full face');
+        setActive(false);
+      }
     }
   }, [faces]);
 
@@ -39,23 +43,26 @@ export default function App() {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        alignContent: 'center',
-      }}>
+    <View style={styles.container}>
       {/* <Button title="Press" onPress={() => setActive(true)} /> */}
       {device != null && hasPermission ? (
         <Camera
           style={StyleSheet.absoluteFill}
           device={device}
-          isActive={true}
+          isActive={active}
           frameProcessor={frameProcessor}
-          frameProcessorFps={300}
+          frameProcessorFps={10000}
+          takeP
         />
       ) : null}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+  },
+});
