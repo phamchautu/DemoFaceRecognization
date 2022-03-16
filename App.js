@@ -52,7 +52,6 @@ export default function App() {
           isActive={active}
           frameProcessor={frameProcessor}
           frameProcessorFps={10000}
-          takeP
         />
       ) : null}
     </View>
